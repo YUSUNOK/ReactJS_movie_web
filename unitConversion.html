@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <!-- production -> development -->
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // 분을 시간 단위로 바꾸기
+    const root = document.querySelector("#root");
+    function App() {
+      // class -> className, for -> htmlFor
+      const [minute, setMinute] = React.useState(0);
+      const [hour, setHour] = React.useState(0.0);
+      const conversion = (evt) => {
+        setMinute(evt.target.value);
+        setMinute((currentMinute) => currentMinute % 60);
+      };
+      return (
+        <div>
+          <h1 class="hi">Super Converter</h1>
+
+          <label for="Minutes">Minutes</label>
+          <input
+            placeholder="Minutes"
+            type="number"
+            id="Minutes"
+            values={minute}
+            onChange={conversion}
+          />
+
+          <label for="Hours">Hours</label>
+          <input
+            placeholder="Hours"
+            type="number"
+            id="Hours"
+            values={minute / 60}
+          />
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
