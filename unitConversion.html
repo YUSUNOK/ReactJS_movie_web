@@ -1,52 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-  <!-- production -> development -->
-  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-  <script type="text/babel">
-    // 분을 시간 단위로 바꾸기
-    const root = document.querySelector("#root");
-    function App() {
-      // class -> className, for -> htmlFor
-      const [minute, setMinute] = React.useState(0);
-      const [hour, setHour] = React.useState(0.0);
-      const conversion = (evt) => {
-        setMinute(evt.target.value);
-        setMinute((currentMinute) => currentMinute % 60);
-      };
-      return (
-        <div>
-          <h1 class="hi">Super Converter</h1>
 
-          <label for="Minutes">Minutes</label>
-          <input
-            placeholder="Minutes"
-            type="number"
-            id="Minutes"
-            values={minute}
-            onChange={conversion}
-          />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
 
-          <label for="Hours">Hours</label>
-          <input
-            placeholder="Hours"
-            type="number"
-            id="Hours"
-            values={minute / 60}
-          />
-        </div>
-      );
+<body>
+  <div id="root"></div>
+</body>
+<!-- production -> development -->
+<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  // 분을 시간 단위로 바꾸기
+  const root = document.querySelector("#root");
+  function MinutesToHours() {
+    // class -> className, for -> htmlFor
+    const [minute, setMinute] = React.useState(0);
+    const [flipped, setFlipped] = React.useState(false);
+
+    const conversion = (evt) => {
+      setMinute(evt.target.value);
+    };
+    const handleResetButtonClick = () => {
+      setMinute(0);
     }
-    ReactDOM.render(<App />, root);
-  </script>
+    const handleFlippedButtonClick = () => {
+      setFlipped(current => !current);
+    }
+    // handleHourChange
+    const handleHourChange = evt => {
+      setMinute(evt.target.value * 60);
+    }
+
+    return (
+      <div>
+        <label for="Minutes">Minutes</label>
+        <input
+          placeholder="Minutes"
+          type="number"
+          id="Minutes"
+          value={minute}
+          onChange={conversion}
+          disabled={!flipped}
+        />
+
+        <label for="Hours">Hours</label>
+        <input
+          placeholder="Hours"
+          type="number"
+          id="Hours"
+          value={Math.round(minute / 60)}
+          disabled={flipped}
+          onChange={handleHourChange}
+        />
+        <div>
+          <button onClick={handleResetButtonClick}>reset</button>
+          <button onClick={handleFlippedButtonClick}>flipped</button>
+        </div>
+      </div>
+    );
+  }
+  function KmToMiles() {
+    return (
+      <div>
+        <h2>KM 2 M</h2>
+      </div>
+    );
+  }
+  function App() {
+    const [index, setIndex] = React.useState("xx");
+    const handleChooseMenuChange = (evt) => {
+      setIndex(evt.target.value);
+    }
+    return (
+      <div>
+        <h1 class="hi">Super Converter</h1>
+        <select value={index} onChange={handleChooseMenuChange}>
+          <option value="xx">Select your units</option>
+          <option value="0">Minutes To Hours</option>
+          <option value="1">Km To Miles</option>
+        </select>
+        <hr />
+        {index === "xx" ? "Please select your units" : null}
+        {index === "0" ? <MinutesToHours /> : null}
+        {index === "1" ? <KmToMiles /> : null}
+      </div>
+    );
+  }
+  ReactDOM.render(<App />, root);
+</script>
+
 </html>
