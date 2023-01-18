@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    // 분할 정복
+    // {}안에 자바스크립트 문법가능
+    const root = document.querySelector("#root");
+
+    function MinutesToHours() {
+      const [amount, setAmount] = React.useState(0);
+      const [flipped, setFlipped] = React.useState(false);
+      const handleInputValueChange = (evt) => {
+        setAmount(evt.target.value);
+      };
+      const handleInputValueReset = () => {
+        setAmount(0);
+      };
+      const handleInputValueflip = () => {
+        setFlipped((current) => !current);
+      };
+      console.log(amount);
+
+      return (
+        <div>
+          <label for="minutes">minutes</label>
+          <input
+            type="number"
+            placeholder="minutes"
+            id="minutes"
+            value={flipped ? amount * 60 : amount}
+            onChange={handleInputValueChange}
+            disabled={flipped}
+          />
+
+          <label for="hours">hours</label>
+          <input
+            type="number"
+            placeholder="hours"
+            id="hours"
+            value={flipped ? amount : amount / 60}
+            onChange={handleInputValueChange}
+            disabled={!flipped}
+          />
+          <button onClick={handleInputValueReset}>reset</button>
+          <button onClick={handleInputValueflip}>flip</button>
+        </div>
+      );
+    }
+    function KmToMiles() {
+      return <h3>KM 2 M</h3>;
+    }
+    function App() {
+      const [index, setIndex] = React.useState("xx");
+      const handleSelect = (evt) => {
+        setIndex(evt.target.value);
+      };
+      return (
+        <div>
+          <h1>Super Converter</h1>
+          <select onChange={handleSelect}>
+            <option value="xx">select your menu</option>
+            <option value="0">MinutesToHours</option>
+            <option value="1">KmToMiles</option>
+          </select>
+          <hr />
+          {index === "0" ? <MinutesToHours /> : null}
+          {index === "1" ? <KmToMiles /> : null}
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+  </script>
+</html>

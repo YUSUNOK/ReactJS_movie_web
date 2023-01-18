@@ -11,28 +11,48 @@
     <div id="root"></div>
   </body>
   <!-- production -> development -->
+  <!-- {text} 또는 prop 쓰고 prop.text -->
   <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <script type="text/babel">
-    const MyButton = React.memo((props) => {
-      console.log(props);
-      return <button onClick={props.onClick}>{props.text}</button>;
-    });
+    function Btn({ text, kk }) {
+      console.log(text, "rendered");
+      return (
+        <button
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+          }}
+          onClick={kk}
+        >
+          {text}
+        </button>
+      );
+    }
+
+    const Memorized = React.memo(Btn);
 
     function App() {
-      const [count, setCount] = React.useState(0);
-      const handleClick = (evt) => {
-        setCount((current) => current + 1);
-        console.log(count);
+      const [value, setValue] = React.useState("Save Changes");
+
+      const changeValue = () => {
+        setValue("Revert Changes");
       };
+
       return (
         <div>
-          <button onClick={handleClick}>test</button>
-          <MyButton text="Save Chnages" />
+          <Memorized text={value} kk={changeValue} />
+
+          <Memorized text="Confirm" />
         </div>
       );
     }
+
+    const root = document.querySelector("#root");
     ReactDOM.render(<App />, root);
   </script>
 </html>
